@@ -1,0 +1,17 @@
+{
+  "name": "gravatar-proxy",
+  "version": "1.0.0",
+  "description": "Gravatar 代理云函数",
+  "main": "index.js",
+  "repository": "https://github.com/SourceGlobalCDN/gravatar-proxy",
+  "author": "AH-dark <ahdark@outlook.com>",
+  "license": "MPL-2.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.26.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "prettier": "^2.5.1"
+  }
+}
