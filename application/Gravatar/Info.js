@@ -10,7 +10,7 @@ const GravatarAPI = require("../../middleware/GravatarAPI/index");
  */
 exports.GravatarInfo = (req, res) => {
     const path = req.path;
-    GravatarAPI.post(path, {
+    GravatarAPI.get(path, {
         responseType: "arraybuffer",
     })
         .then((r) => {
