@@ -1,0 +1,21 @@
+{
+  "name": "gravatar-proxy",
+  "version": "2.0.0",
+  "description": "Gravatar and other avatar services proxyer",
+  "main": "index.js",
+  "repository": "https://github.com/SourceGlobalCDN/gravatar-proxy.git",
+  "author": {
+    "name": "AH-dark",
+    "email": "ahdark@outlook.com",
+    "url": "https://ahdark.com"
+  },
+  "license": "MPLv2.0",
+  "private": true,
+  "devDependencies": {
+    "prettier": "^2.5.1"
+  },
+  "dependencies": {
+    "axios": "^0.26.0",
+    "express": "^4.17.3"
+  }
+}
