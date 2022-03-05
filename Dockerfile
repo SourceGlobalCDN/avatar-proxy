@@ -16,4 +16,4 @@ RUN npm install -g npm@latest
 RUN chmod -Rf 777 /home/web
 RUN cd /home/web/ && npm install
 
-ENTRYPOINT node /home/web/app.js
+ENTRYPOINT node /home/web/index.js
