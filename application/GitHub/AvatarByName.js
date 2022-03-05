@@ -13,7 +13,6 @@ const pathReg = new RegExp("^/gh(/[ut]/[a-zA-Z0-9-]+)");
  */
 exports.GitHubAvatarByName = (req, res) => {
     const path = req.path.match(pathReg)[1];
-    const haveType = RegExp("^/([ut])/").test(path);
     const isUser = path.startsWith("/t/");
     const userName =
         path.startsWith("/u/") || path.startsWith("/t/")
