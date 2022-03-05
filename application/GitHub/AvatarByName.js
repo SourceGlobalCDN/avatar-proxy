@@ -13,10 +13,12 @@ const pathReg = new RegExp("^/gh(/[ut]/[a-zA-Z0-9-]+)");
  */
 exports.GitHubAvatarByName = (req, res) => {
     const path = req.path.match(pathReg)[1];
-
-    const match = path.match(RegExp("^/([ut])/([a-zA-Z0-9-]+)"));
-    const isUser = match[1] === "u";
-    const userName = match[2];
+    const haveType = RegExp("^/([ut])/").test(path);
+    const isUser = path.startsWith("/t/");
+    const userName =
+        path.startsWith("/u/") || path.startsWith("/t/")
+            ? path.match(RegExp("^/[ut]/([a-zA-Z0-9-]+)"))[1]
+            : path.match(RegExp("^/([a-zA-Z0-9-]+)"))[1];
     const apiPath = `/${isUser ? "users" : "orgs"}/${userName}`;
 
     res.contentType("image/jpeg");
@@ -47,7 +49,7 @@ exports.GitHubAvatarByName = (req, res) => {
                     ? Number(req.query.s)
                     : 460;
 
-            GitHubAvatarAPI(req.path.replace(userName, id), {
+            GitHubAvatarAPI(path.replace(userName, id), {
                 params: {
                     s: size,
                     v: 4,

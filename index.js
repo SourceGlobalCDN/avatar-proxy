@@ -64,8 +64,8 @@ app.all("/ping", (req, res) => {
 app.all(RegExp("^(/avatar|/gravatar)/([a-zA-Z0-9]{32})?"), GravatarImage);
 app.all(RegExp("^/[a-zA-Z0-9]{32}\\.(json|xml|php|vcf|qr)"), GravatarInfo);
 
-app.all(RegExp("^/gh/[ut]/\\d+"), GitHubAvatar);
-app.all(RegExp("^/gh/[ut]/[a-zA-Z0-9-]+"), GitHubAvatarByName);
+app.all(RegExp("^/gh(/[ut])?/\\d+"), GitHubAvatar);
+app.all(RegExp("^/gh(/[ut])?/[a-zA-Z0-9-]+"), GitHubAvatarByName);
 
 app.listen(port, () => {
     console.log(`Gravatar Proxy listening on port ${port}`);
