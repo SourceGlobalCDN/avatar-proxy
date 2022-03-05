@@ -5,7 +5,7 @@
 ## Docker 部署
 
 ```bash
-docker pull ghcr.io/sourceglobalcdn/gravatar-proxy:master
+docker pull ghcr.io/sourceglobalcdn/avatar-proxy:master
 docker run -p 9000:9000 -d ghcr.io/sourceglobalcdn/gravatar-proxy:master
 ```
 
