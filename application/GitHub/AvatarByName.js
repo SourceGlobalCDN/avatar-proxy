@@ -3,7 +3,7 @@
 const GitHubAvatarAPI = require("../../middleware/GitHubAPI/Avatar");
 const GitHubAPI = require("../../middleware/GitHubAPI/API");
 
-const pathReg = new RegExp("^/gh(/[ut]/[a-zA-Z0-9-]+)");
+const pathReg = new RegExp("^/gh(/.*)");
 
 /**
  *
@@ -13,11 +13,11 @@ const pathReg = new RegExp("^/gh(/[ut]/[a-zA-Z0-9-]+)");
  */
 exports.GitHubAvatarByName = (req, res) => {
     const path = req.path.match(pathReg)[1];
-    const isUser = path.startsWith("/t/");
-    const userName =
-        path.startsWith("/u/") || path.startsWith("/t/")
-            ? path.match(RegExp("^/[ut]/([a-zA-Z0-9-]+)"))[1]
-            : path.match(RegExp("^/([a-zA-Z0-9-]+)"))[1];
+    const isUser = !path.startsWith("/t/");
+    const haveType = path.startsWith("/u/") || path.startsWith("/t/");
+    const userName = haveType
+        ? path.match(RegExp("^/[ut]/([a-zA-Z0-9-]+)"))[1]
+        : path.match(RegExp("^/([a-zA-Z0-9-]+)"))[1];
     const apiPath = `/${isUser ? "users" : "orgs"}/${userName}`;
 
     res.contentType("image/jpeg");
@@ -48,13 +48,18 @@ exports.GitHubAvatarByName = (req, res) => {
                     ? Number(req.query.s)
                     : 460;
 
-            GitHubAvatarAPI(path.replace(userName, id), {
-                params: {
-                    s: size,
-                    v: 4,
-                },
-                responseType: "arraybuffer",
-            })
+            GitHubAvatarAPI(
+                haveType
+                    ? path.replace(userName, id)
+                    : `/${isUser ? "u" : "t"}` + path.replace(userName, id),
+                {
+                    params: {
+                        s: size,
+                        v: 4,
+                    },
+                    responseType: "arraybuffer",
+                }
+            )
                 .then((r) => {
                     if (r.status === 200) {
                         res.statusCode = 200;
