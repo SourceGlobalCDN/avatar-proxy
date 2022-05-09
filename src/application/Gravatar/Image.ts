@@ -1,4 +1,4 @@
-import GravatarAPI from "../../middleware/GravatarAPI";
+import GravatarAPI from "../../middleware/Gravatar";
 import { Request, Response } from "express";
 
 const GravatarImage = (req: Request, res: Response) => {

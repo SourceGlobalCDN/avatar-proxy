@@ -1,4 +1,4 @@
-import GitHubAvatarAPI from "../../middleware/GitHubAPI/Avatar";
+import GitHub from "../../middleware/GitHub";
 import { Request, Response } from "express";
 
 const pathReg = new RegExp("^/gh(/[ut]/\\d+)");
@@ -10,7 +10,7 @@ const GitHubAvatar = (req: Request, res: Response) => {
             ? Number(req.query.s)
             : 460;
 
-    GitHubAvatarAPI(path, {
+    GitHub.Avatar(path, {
         params: {
             s: size,
             v: 4,

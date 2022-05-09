@@ -1,5 +1,4 @@
-import GitHubAvatarAPI from "../../middleware/GitHubAPI/Avatar";
-import GitHubAPI from "../../middleware/GitHubAPI/API";
+import GitHub from "../../middleware/GitHub";
 import { Request, Response } from "express";
 
 const pathReg = new RegExp("^/gh(/.*)");
@@ -19,7 +18,7 @@ const GitHubAvatarByName = (req: Request, res: Response) => {
         "https://api.github.com" + apiPath
     );
 
-    GitHubAPI.get(apiPath, {
+    GitHub.API.get(apiPath, {
         responseType: "json",
     })
         .then((d) => {
@@ -37,7 +36,7 @@ const GitHubAvatarByName = (req: Request, res: Response) => {
                     ? Number(req.query.s)
                     : 460;
 
-            GitHubAvatarAPI("/u" + path.replace(userName, id), {
+            GitHub.Avatar("/u" + path.replace(userName, id), {
                 params: {
                     s: size,
                     v: 4,
