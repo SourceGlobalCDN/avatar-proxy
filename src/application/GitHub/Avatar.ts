@@ -1,17 +1,10 @@
-"use strict";
-
-const GitHubAvatarAPI = require("../../middleware/GitHubAPI/Avatar");
+import GitHubAvatarAPI from "../../middleware/GitHubAPI/Avatar";
+import { Request, Response } from "express";
 
 const pathReg = new RegExp("^/gh(/[ut]/\\d+)");
 
-/**
- *
- * @param {Request<P, ResBody, ReqBody, ReqQuery, Locals>}req
- * @param {Response<ResBody, Locals>} res
- * @return {void}
- */
-exports.GitHubAvatar = (req, res) => {
-    const path = req.path.match(pathReg)[1];
+const GitHubAvatar = (req: Request, res: Response) => {
+    const path = (req.path.match(pathReg) as string[])[1];
     const size =
         typeof req.query.s !== "undefined" && Number(req.query.s) <= 460
             ? Number(req.query.s)
@@ -51,3 +44,5 @@ exports.GitHubAvatar = (req, res) => {
             );
         });
 };
+
+export default GitHubAvatar;

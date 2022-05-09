@@ -1,19 +1,25 @@
-FROM node:16-alpine
-WORKDIR /home/web/
+FROM node:16-alpine AS deps
+
 ENV PORT 9000
 
-LABEL org.opencontainers.image.authors="AH-dark"
-LABEL org.opencontainers.image.source="https://github.com/SourceGlobalCDN/gravatar-proxy"
+COPY package.json package.json
+COPY yarn.lock yarn.lock
 
-COPY ./ /home/web
+RUN yarn install
 
-EXPOSE 9000
+FROM node:16-alpine AS builder
 
-# Update
-RUN npm install -g npm@latest
+COPY --from=deps node_modules node_modules
+COPY . .
+RUN yarn tsc
 
-# Install dependencies
-RUN chmod -Rf 777 /home/web
-RUN cd /home/web/ && npm install
+FROM node:16-alpine AS runner
 
-ENTRYPOINT node /home/web/index.js
+COPY --from=builder build build
+COPY --from=deps node_modules node_modules
+COPY package.json package.json
+COPY yarn.lock yarn.lock
+
+RUN yarn install --production
+
+ENTRYPOINT node build/index.js

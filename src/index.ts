@@ -1,14 +1,12 @@
-"use strict";
+import express, { NextFunction, Request, Response } from "express";
+import GravatarImage from "./application/Gravatar/Image";
+import Security from "./application/Security";
+import GravatarInfo from "./application/Gravatar/Info";
+import GitHubAvatar from "./application/GitHub/Avatar";
+import GitHubAvatarByName from "./application/GitHub/AvatarByName";
 
-const express = require("express");
 const app = express();
 const port = Number(process.env.PORT) || 9000;
-
-const { GravatarImage } = require("./application/Gravatar/Image");
-const { Security } = require("./application/Security");
-const { GravatarInfo } = require("./application/Gravatar/Info");
-const { GitHubAvatar } = require("./application/GitHub/Avatar");
-const { GitHubAvatarByName } = require("./application/GitHub/AvatarByName");
 
 const allowMethod = ["GET", "POST", "HEAD", "OPTIONS"];
 
@@ -29,17 +27,14 @@ app.use((res, req, next) => {
 
 app.use(Security);
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
     if (
         req.method.toUpperCase() === "GET" &&
-        typeof req.referrer === "string" &&
-        req.referrer
+        typeof req.headers["referer"] !== "undefined" &&
+        req.headers["referer"]
     ) {
-        const url = new URL(req.referrer);
-        res.setHeader(
-            "Access-Allow-Control-Origin",
-            `${url.protocol}://${url.hostname}`
-        );
+        const url = new URL(req.headers["referer"]);
+        res.setHeader("Access-Allow-Control-Origin", url.origin);
         res.setHeader("Vary", "Origin");
         res.setHeader("Access-Control-Max-Age", 3600);
         res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -62,10 +57,10 @@ app.all("/ping", (req, res) => {
 });
 
 app.all(new RegExp("^(/avatar|/gravatar)/([a-zA-Z0-9]{32})?$"), GravatarImage);
-app.all(new RegExp("^/[a-zA-Z0-9]{32}\\.(json|xml|php|vcf|qr)$"), GravatarInfo);
+app.all(new RegExp("^/[a-zA-Z\\d]{32}\\.(json|xml|php|vcf|qr)$"), GravatarInfo);
 
 app.all(new RegExp("^/gh(/[ut])?/\\d+$"), GitHubAvatar);
-app.all(new RegExp("^/gh/[a-zA-Z0-9-]+$"), GitHubAvatarByName);
+app.all(new RegExp("^/gh/[a-zA-Z\\d-]+$"), GitHubAvatarByName);
 
 app.listen(port, () => {
     console.log(`Gravatar Proxy listening on port ${port}`);

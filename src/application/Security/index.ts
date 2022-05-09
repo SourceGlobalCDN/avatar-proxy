@@ -1,15 +1,15 @@
-"use strict";
+import { NextFunction, Request, Response } from "express";
 
 /**
  * @param {*} req
  * @param {*} res
  * @param {NextFunction|Response<*, Record<string, *>>} next
  */
-exports.Security = (req, res, next) => {
+const Security = (req: Request, res: Response, next: NextFunction) => {
     console.log("[Security]", req.method, req.originalUrl, "Time:", Date.now());
     // UA verification
     if (
-        !req.headers.hasOwnProperty("user-agent") ||
+        typeof req.headers["user-agent"] === "undefined" ||
         req.headers["user-agent"].length < 5
     ) {
         console.log(
@@ -24,22 +24,22 @@ exports.Security = (req, res, next) => {
         return;
     }
     // Query CC attack detection
-    if (req.query.length < 2) {
-        for (let paramsKey in req.query) {
-            if (paramsKey.length > 20) {
-                console.log(
-                    "[Security]",
-                    req.method,
-                    req.originalUrl,
-                    "Intercepted due to Param exception."
-                );
-                res.sendStatus(403);
-                res.end();
-                return;
-            }
+    for (let paramsKey in req.query) {
+        if (paramsKey.length > 20) {
+            console.log(
+                "[Security]",
+                req.method,
+                req.originalUrl,
+                "Intercepted due to Param exception."
+            );
+            res.sendStatus(403);
+            res.end();
+            return;
         }
     }
 
     // Clear
     next();
 };
+
+export default Security;

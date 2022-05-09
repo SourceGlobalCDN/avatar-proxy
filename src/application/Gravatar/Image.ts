@@ -1,14 +1,7 @@
-"use strict";
+import GravatarAPI from "../../middleware/GravatarAPI";
+import { Request, Response } from "express";
 
-const GravatarAPI = require("../../middleware/GravatarAPI/index");
-
-/**
- *
- * @param {Request<P, ResBody, ReqBody, ReqQuery, Locals>}req
- * @param {Response<ResBody, Locals>} res
- * @return {void}
- */
-exports.GravatarImage = (req, res) => {
+const GravatarImage = (req: Request, res: Response) => {
     const path = req.path;
     if (path.startsWith("/gravatar")) {
         res.redirect(path.replace("/gravatar/", "/avatar/"));
@@ -54,3 +47,5 @@ exports.GravatarImage = (req, res) => {
             );
         });
 };
+
+export default GravatarImage;

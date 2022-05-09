@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from "axios";
 
 const baseUrl = "https://api.github.com";
 
@@ -7,4 +7,4 @@ const instance = axios.create({
     withCredentials: false,
 });
 
-module.exports = instance;
+export default instance;

@@ -1,14 +1,7 @@
-"use strict";
+import GravatarAPI from "../../middleware/GravatarAPI";
+import { Request, Response } from "express";
 
-const GravatarAPI = require("../../middleware/GravatarAPI/index");
-
-/**
- *
- * @param {Request<P, ResBody, ReqBody, ReqQuery, Locals>}req
- * @param {Response<ResBody, Locals>} res
- * @return {void}
- */
-exports.GravatarInfo = (req, res) => {
+const GravatarInfo = (req: Request, res: Response) => {
     const path = req.path;
     GravatarAPI.get(path, {
         responseType: "arraybuffer",
@@ -35,3 +28,5 @@ exports.GravatarInfo = (req, res) => {
             );
         });
 };
+
+export default GravatarInfo;

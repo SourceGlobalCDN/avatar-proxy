@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from "axios";
 
 const baseUrl = "https://avatars.githubusercontent.com";
 
@@ -8,4 +8,4 @@ const instance = axios.create({
     method: "GET",
 });
 
-module.exports = instance;
+export default instance;
