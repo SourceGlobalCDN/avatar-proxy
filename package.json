@@ -2,7 +2,7 @@
   "name": "gravatar-proxy",
   "version": "2.0.0",
   "description": "Gravatar and other avatar services proxyer",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/SourceGlobalCDN/gravatar-proxy.git",
   "author": {
     "name": "AH-dark",
