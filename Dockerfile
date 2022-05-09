@@ -17,6 +17,7 @@ COPY --from=builder build build
 COPY --from=deps node_modules node_modules
 COPY package.json package.json
 COPY yarn.lock yarn.lock
+COPY blacklist.json blacklist.json
 
 RUN yarn install --production
 

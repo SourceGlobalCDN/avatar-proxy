@@ -1,5 +1,6 @@
 import GitHub from "../../middleware/GitHub";
 import { Request, Response } from "express";
+import { validateBlackList } from "../../global";
 
 const pathReg = new RegExp("^/gh(/.*)");
 
@@ -7,6 +8,12 @@ const GitHubAvatarByName = (req: Request, res: Response) => {
     const path = (req.path.match(pathReg) as string[])[1];
     const userName = (path.match(RegExp("^/([a-zA-Z\\d-]+)")) as string[])[1];
     const apiPath = `/users/${userName}`;
+
+    if (!validateBlackList("githubUser", path.slice(1))) {
+        res.sendStatus(403);
+        res.end();
+        return;
+    }
 
     res.contentType("image/jpeg");
 

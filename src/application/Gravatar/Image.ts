@@ -1,13 +1,22 @@
 import GravatarAPI from "../../middleware/Gravatar";
 import { Request, Response } from "express";
+import { validateBlackList } from "../../global";
 
 const GravatarImage = (req: Request, res: Response) => {
     const path = req.path;
+
     if (path.startsWith("/gravatar")) {
         res.redirect(path.replace("/gravatar/", "/avatar/"));
         res.end();
         return;
     }
+
+    if (!validateBlackList("gravatar", path.slice(8))) {
+        res.sendStatus(403);
+        res.end();
+        return;
+    }
+
     GravatarAPI.get(path, {
         params: {
             s: typeof req.query.s !== "undefined" ? req.query.s : undefined,

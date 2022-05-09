@@ -4,6 +4,7 @@ import Security from "./application/Security";
 import GravatarInfo from "./application/Gravatar/Info";
 import GitHubAvatar from "./application/GitHub/Avatar";
 import GitHubAvatarByName from "./application/GitHub/AvatarByName";
+import { blackList } from "./global";
 
 const app = express();
 const port: number =
@@ -30,6 +31,16 @@ app.use((res, req, next) => {
 });
 
 app.use(Security);
+
+app.use((res, req, next) => {
+    for (let allow of allowMethod) {
+        if (res.method.toUpperCase() === allow) {
+            next();
+            return;
+        }
+    }
+    req.sendStatus(405);
+});
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     if (
@@ -68,4 +79,5 @@ app.all(new RegExp("^/gh/[a-zA-Z\\d-]+$"), GitHubAvatarByName);
 
 app.listen(port, () => {
     console.log(`Gravatar Proxy listening on port ${port}`);
+    console.log("Black List:", blackList);
 });

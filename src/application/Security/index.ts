@@ -6,7 +6,7 @@ import { NextFunction, Request, Response } from "express";
  * @param {NextFunction|Response<*, Record<string, *>>} next
  */
 const Security = (req: Request, res: Response, next: NextFunction) => {
-    console.log("[Security]", req.method, req.originalUrl, "Time:", Date.now());
+    console.log("[Security]", req.method, req.originalUrl, "Time:", Date());
     // UA verification
     if (
         typeof req.headers["user-agent"] === "undefined" ||

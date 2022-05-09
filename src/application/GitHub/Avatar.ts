@@ -1,5 +1,6 @@
 import GitHub from "../../middleware/GitHub";
 import { Request, Response } from "express";
+import { validateBlackList } from "../../global";
 
 const pathReg = new RegExp("^/gh(/[ut]/\\d+)");
 
@@ -9,6 +10,12 @@ const GitHubAvatar = (req: Request, res: Response) => {
         typeof req.query.s !== "undefined" && Number(req.query.s) <= 460
             ? Number(req.query.s)
             : 460;
+
+    if (!validateBlackList("github", path.split("/")[2])) {
+        res.sendStatus(403);
+        res.end();
+        return;
+    }
 
     GitHub.Avatar(path, {
         params: {
