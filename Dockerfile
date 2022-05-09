@@ -1,7 +1,5 @@
 FROM node:16-alpine AS deps
 
-ENV PORT 9000
-
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 
@@ -21,5 +19,7 @@ COPY package.json package.json
 COPY yarn.lock yarn.lock
 
 RUN yarn install --production
+
+EXPOSE 3000
 
 ENTRYPOINT node build/index.js

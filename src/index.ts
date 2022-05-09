@@ -6,7 +6,11 @@ import GitHubAvatar from "./application/GitHub/Avatar";
 import GitHubAvatarByName from "./application/GitHub/AvatarByName";
 
 const app = express();
-const port = Number(process.env.PORT) || 9000;
+const port: number =
+    typeof process.env.PORT !== "undefined" &&
+    !isNaN(parseInt(process.env.PORT))
+        ? parseInt(process.env.PORT)
+        : 3000;
 
 const allowMethod = ["GET", "POST", "HEAD", "OPTIONS"];
 
