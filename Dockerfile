@@ -1,26 +1,17 @@
-FROM node:16-alpine AS deps
+FROM golang:alpine AS Builder
+WORKDIR /app/avatar-proxy/
 
-COPY package.json package.json
-COPY yarn.lock yarn.lock
+RUN apk add build-base
 
-RUN yarn install
-
-FROM node:16-alpine AS builder
-
-COPY --from=deps node_modules node_modules
 COPY . .
-RUN yarn tsc
+RUN go mod download
 
-FROM node:16-alpine AS runner
+RUN go build -tags=sonic -o avatar-proxy .
 
-COPY --from=builder build build
-COPY --from=deps node_modules node_modules
-COPY package.json package.json
-COPY yarn.lock yarn.lock
-COPY blacklist.json blacklist.json
+FROM alpine AS Runner
+WORKDIR /app/avatar-proxy/
 
-RUN yarn install --production
+COPY --from=Builder /app/avatar-proxy/avatar-proxy avatar-proxy
 
-EXPOSE 3000
-
-ENTRYPOINT node build/index.js
+RUN chmod +x avatar-proxy
+CMD ./avatar-proxy
