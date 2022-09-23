@@ -45,6 +45,10 @@ func (i *Impl) GetAvatar(hash string, option Payload) (*io.ReadCloser, int, erro
 
 	q := req.URL.Query()
 	if option.Size > 0 {
+		if option.Size > 2048 {
+			option.Size = 2048
+		}
+
 		q.Add("s", strconv.Itoa(option.Size))
 	}
 	if option.DefaultImg != "" {

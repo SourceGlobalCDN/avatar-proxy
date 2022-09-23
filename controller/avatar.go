@@ -29,6 +29,16 @@ func AvatarHandler(c *gin.Context) {
 		return
 	}
 
+	if avatarPayload.Size > 2048 {
+		u := c.Request.URL
+		q := u.Query()
+		q.Set("s", "2048")
+		u.RawQuery = q.Encode()
+
+		c.Redirect(302, fmt.Sprintf("/avatar/%s?%s", code, u.RawQuery))
+		return
+	}
+
 	u, _ := url.Parse(env.ProxyConfig.Remote)
 	c.Header("X-Avatar-Proxy", u.String())
 
