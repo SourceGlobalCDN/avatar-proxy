@@ -10,5 +10,8 @@ func InitRouter() *gin.Engine {
 
 	r.GET("/", controller.HomepageHandler)
 
+	r.GET("/avatar/", controller.AvatarHandler)
+	r.GET("/avatar/:code", controller.AvatarHandler)
+
 	return r
 }

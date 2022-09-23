@@ -8,5 +8,7 @@ var SystemConfig = &system{
 }
 
 var ProxyConfig = &proxy{
-	Remote: util.EnvStr("REMOTE", "https://www.gravatar.com/avatar/"),
+	Remote:    util.EnvStr("PROXY_REMOTE", "https://www.gravatar.com/avatar/"),
+	UserAgent: util.EnvStr("PROXY_USERAGENT", "AvatarProxy/1.0"),
+	Timeout:   util.EnvInt("PROXY_TIMEOUT", 5),
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/env"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 type Client struct {
@@ -25,6 +26,8 @@ func NewClient() *Client {
 	if base, err := url.Parse(env.ProxyConfig.Remote); err == nil {
 		client.baseUrl = base
 	}
+
+	client.client.Timeout = time.Duration(env.ProxyConfig.Timeout) * time.Second
 
 	return client
 }

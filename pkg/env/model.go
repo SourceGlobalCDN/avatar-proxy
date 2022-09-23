@@ -6,5 +6,7 @@ type system struct {
 }
 
 type proxy struct {
-	Remote string
+	Remote    string
+	UserAgent string
+	Timeout   int
 }
