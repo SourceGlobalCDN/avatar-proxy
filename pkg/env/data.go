@@ -3,7 +3,7 @@ package env
 import "github.com/SourceGlobalCDN/avatar-proxy/pkg/util"
 
 var SystemConfig = &system{
-	Listen: util.EnvStr("LISTEN", ":8080"),
+	Listen: util.EnvStr("LISTEN", ":9000"),
 	Debug:  util.EnvBool("DEBUG", false),
 }
 
