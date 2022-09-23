@@ -1,14 +1,19 @@
 package main
 
 import (
+	_ "embed"
+
 	"github.com/SourceGlobalCDN/avatar-proxy/bootstrap"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/env"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/log"
 	"github.com/SourceGlobalCDN/avatar-proxy/router"
 )
 
+//go:embed blacklist.json
+var blacklistData []byte
+
 func init() {
-	bootstrap.InitApplication()
+	bootstrap.InitApplication(blacklistData)
 }
 
 func main() {

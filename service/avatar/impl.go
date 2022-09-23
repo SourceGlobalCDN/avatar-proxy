@@ -2,13 +2,14 @@ package avatar
 
 import (
 	"fmt"
-	"github.com/SourceGlobalCDN/avatar-proxy/pkg/env"
-	"github.com/SourceGlobalCDN/avatar-proxy/pkg/log"
-	"github.com/SourceGlobalCDN/avatar-proxy/pkg/request"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
+
+	"github.com/SourceGlobalCDN/avatar-proxy/pkg/env"
+	"github.com/SourceGlobalCDN/avatar-proxy/pkg/log"
+	"github.com/SourceGlobalCDN/avatar-proxy/pkg/request"
 )
 
 type Impl struct {

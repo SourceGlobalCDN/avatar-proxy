@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"github.com/SourceGlobalCDN/avatar-proxy/pkg/blacklist"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/env"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/log"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/serializer"
@@ -13,6 +14,12 @@ import (
 
 func AvatarHandler(c *gin.Context) {
 	code := c.Param("code")
+
+	if blacklist.CheckGravatar(code) {
+		log.Log().Infof("Blocked gravatar code: %s", code)
+		c.Status(404)
+		return
+	}
 
 	var avatarPayload avatar.Payload
 	err := c.ShouldBindQuery(&avatarPayload)

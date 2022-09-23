@@ -2,10 +2,11 @@ package request
 
 import (
 	"bytes"
-	"github.com/SourceGlobalCDN/avatar-proxy/pkg/env"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/SourceGlobalCDN/avatar-proxy/pkg/env"
 )
 
 type Client struct {
@@ -21,10 +22,7 @@ func NewClient() *Client {
 	client := &Client{
 		client:  http.DefaultClient,
 		headers: make(http.Header),
-	}
-
-	if base, err := url.Parse(env.ProxyConfig.Remote); err == nil {
-		client.baseUrl = base
+		baseUrl: nil,
 	}
 
 	client.client.Timeout = time.Duration(env.ProxyConfig.Timeout) * time.Second
@@ -60,6 +58,8 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 			req.Header.Set(key, value)
 		}
 	}
+
+	req.URL = c.baseUrl.ResolveReference(req.URL)
 
 	return c.client.Do(req)
 }
