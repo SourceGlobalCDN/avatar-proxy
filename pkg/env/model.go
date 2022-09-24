@@ -10,3 +10,12 @@ type proxy struct {
 	UserAgent string
 	Timeout   int
 }
+
+type cache struct {
+	Enabled  bool
+	Mode     string `binding:"eq=redis|eq=memory"`
+	Host     string
+	Port     int
+	Password string
+	Database int
+}

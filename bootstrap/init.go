@@ -4,6 +4,7 @@ import (
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/blacklist"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/env"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/log"
+	"github.com/SourceGlobalCDN/avatar-proxy/router"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
@@ -20,4 +21,5 @@ func InitApplication(blackListData []byte) {
 	log.Log().Info("Application initialized")
 
 	blacklist.Init(blackListData)
+	router.InitCache()
 }

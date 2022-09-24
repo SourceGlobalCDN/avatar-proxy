@@ -12,3 +12,12 @@ var ProxyConfig = &proxy{
 	UserAgent: util.EnvStr("PROXY_USERAGENT", "AvatarProxy/1.0"),
 	Timeout:   util.EnvInt("PROXY_TIMEOUT", 5),
 }
+
+var CacheConfig = &cache{
+	Enabled:  util.EnvBool("CACHE_ENABLED", false),
+	Mode:     util.EnvStr("CACHE_MODE", "memory"),
+	Host:     util.EnvStr("CACHE_HOST", "localhost"),
+	Port:     util.EnvInt("CACHE_PORT", 6379),
+	Password: util.EnvStr("CACHE_PASSWORD", ""),
+	Database: util.EnvInt("CACHE_DATABASE", 0),
+}
