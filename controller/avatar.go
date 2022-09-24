@@ -75,3 +75,8 @@ func AvatarHandler(c *gin.Context) {
 
 	c.DataFromReader(200, int64(length), "image/png", *avatarCloser, nil)
 }
+
+func RedirectToAvatar(c *gin.Context) {
+	code := c.GetString("code")
+	c.Redirect(302, fmt.Sprintf("/avatar/%s?%s", code, c.Request.URL.RawQuery))
+}
