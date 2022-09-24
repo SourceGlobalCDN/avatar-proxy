@@ -33,7 +33,7 @@ func NewImpl() *Impl {
 }
 
 func (i *Impl) GetAvatar(hash string, option Payload) (*io.ReadCloser, int, error) {
-	u, err := i.baseUrl.Parse(hash)
+	u, err := i.baseUrl.Parse("/avatar/" + hash)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -70,11 +70,54 @@ func (i *Impl) GetAvatar(hash string, option Payload) (*io.ReadCloser, int, erro
 		return nil, 0, err
 	}
 
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200:
+	case 404:
+		return nil, 0, ErrNotFound
+	default:
 		return nil, 0, fmt.Errorf("unexpected status code: %d", res.StatusCode)
 	}
 
 	length, _ := strconv.Atoi(res.Header.Get("Content-Length"))
 
 	return &res.Body, length, nil
+}
+
+func (i *Impl) GetAvatarInfo(hash string) (*Info, error) {
+	u, err := i.baseUrl.Parse(fmt.Sprintf("/%s.json", hash))
+	if err != nil {
+		return nil, err
+	}
+
+	log.Log().Debugf("Request avatar info: %s", u.String())
+
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := i.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	switch res.StatusCode {
+	case 200:
+	case 404:
+		return nil, ErrNotFound
+	default:
+		return nil, fmt.Errorf("unexpected status code: %d", res.StatusCode)
+	}
+
+	bytes, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	info, err := UnmarshalInfo(bytes)
+	if err != nil {
+		return nil, err
+	}
+
+	return info, nil
 }

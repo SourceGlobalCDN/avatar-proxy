@@ -13,11 +13,13 @@ func InitRouter() *gin.Engine {
 
 	r.GET("/", controller.HomepageHandler)
 
+	r.GET(":path", middleware.CacheControl(24*time.Hour), controller.AvatarInfoChecker, controller.AvatarInfoHandler)
+
 	{
 		avatars := r.Group("/avatar", middleware.CacheControl(time.Hour*24*365))
 
 		avatars.GET("", controller.AvatarHandler)
-		avatars.GET(":code", controller.AvatarHandler)
+		avatars.GET(":code", controller.AvatarParser, controller.AvatarHandler)
 	}
 
 	return r

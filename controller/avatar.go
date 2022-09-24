@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/blacklist"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/env"
@@ -12,8 +13,20 @@ import (
 	"strings"
 )
 
-func AvatarHandler(c *gin.Context) {
+func AvatarParser(c *gin.Context) {
 	code := c.Param("code")
+	code = strings.ToLower(code)
+	if len(code) != 32 {
+		c.Set("code", "")
+	} else {
+		c.Set("code", code)
+	}
+
+	c.Next()
+}
+
+func AvatarHandler(c *gin.Context) {
+	code := c.GetString("code")
 
 	if blacklist.CheckGravatar(code) {
 		log.Log().Infof("Blocked gravatar code: %s", code)
@@ -50,7 +63,12 @@ func AvatarHandler(c *gin.Context) {
 	client := avatar.NewFactory()
 	avatarCloser, length, err := client.GetAvatar(code, avatarPayload)
 	if err != nil {
-		log.Log().Errorf("Failed to get avatarCloser: %s", err)
+		if errors.Is(err, avatar.ErrNotFound) {
+			c.JSON(404, serializer.NotFoundError())
+			return
+		}
+
+		log.Log().Errorf("Failed to get avatar: %s", err)
 		c.JSON(500, serializer.InternalServerError())
 		return
 	}
