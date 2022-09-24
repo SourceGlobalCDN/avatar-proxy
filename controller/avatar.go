@@ -3,14 +3,17 @@ package controller
 import (
 	"errors"
 	"fmt"
+	"io"
+	"net/url"
+	"strings"
+
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/blacklist"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/env"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/log"
 	"github.com/SourceGlobalCDN/avatar-proxy/pkg/serializer"
+	"github.com/SourceGlobalCDN/avatar-proxy/pkg/util"
 	"github.com/SourceGlobalCDN/avatar-proxy/service/avatar"
 	"github.com/gin-gonic/gin"
-	"net/url"
-	"strings"
 )
 
 func AvatarParser(c *gin.Context) {
@@ -73,7 +76,21 @@ func AvatarHandler(c *gin.Context) {
 		return
 	}
 
-	c.DataFromReader(200, int64(length), "image/png", *avatarCloser, nil)
+	data, err := io.ReadAll(*avatarCloser)
+	if err != nil {
+		log.Log().Errorf("Failed to read avatar: %s", err)
+		c.JSON(500, serializer.InternalServerError())
+		return
+	}
+
+	c.Header("Content-Disposition", fmt.Sprintf("inline; filename=\"%s\"", code))
+	c.Header("Content-Length", fmt.Sprintf("%d", length))
+
+	md5 := util.MD5Hex(data)
+	c.Header("ETag", fmt.Sprintf("W/\"%s\"", util.MD5Hex(data)))
+	c.Header("Content-MD5", md5)
+
+	c.Data(200, "image/jpeg", data)
 }
 
 func RedirectToAvatar(c *gin.Context) {
