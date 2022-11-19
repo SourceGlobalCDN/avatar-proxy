@@ -17,5 +17,7 @@ COPY --from=Builder /app/avatar-proxy/avatar-proxy avatar-proxy
 RUN apk add --no-cache tini
 ENTRYPOINT ["/sbin/tini", "--"]
 
+ENV LISTEN :9000
+
 RUN chmod +x avatar-proxy
 CMD ./avatar-proxy

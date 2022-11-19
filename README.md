@@ -1,11 +1,11 @@
 # Avatar Proxy
 
-使用Express框架和Axios代理各大站点的头像
+使用 Gin 框架实现的头像代理服务。
 
 ## Docker 部署
 
 ```bash
-docker pull ghcr.io/sourceglobalcdn/avatar-proxy:master
+docker pull ghcr.io/sourceglobalcdn/avatar-proxy:latest
 docker run -p 9000:9000 -d ghcr.io/sourceglobalcdn/gravatar-proxy:master
 ```
 
