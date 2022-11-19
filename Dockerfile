@@ -13,5 +13,9 @@ WORKDIR /app/avatar-proxy/
 
 COPY --from=Builder /app/avatar-proxy/avatar-proxy avatar-proxy
 
+# Add Tini
+RUN apk add --no-cache tini
+ENTRYPOINT ["/sbin/tini", "--"]
+
 RUN chmod +x avatar-proxy
 CMD ./avatar-proxy
