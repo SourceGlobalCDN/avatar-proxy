@@ -8,7 +8,7 @@ require (
 	github.com/fatih/color v1.13.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-redis/redis/v8 v8.11.5
-	github.com/goccy/go-json v0.9.11
+	github.com/goccy/go-json v0.10.0
 	github.com/json-iterator/go v1.1.12
 	github.com/samber/lo v1.28.2
 	github.com/sirupsen/logrus v1.9.0
