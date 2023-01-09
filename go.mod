@@ -3,7 +3,7 @@ module github.com/SourceGlobalCDN/avatar-proxy
 go 1.19
 
 require (
-	github.com/bytedance/sonic v1.5.0
+	github.com/bytedance/sonic v1.6.1
 	github.com/chenyahui/gin-cache v1.7.1
 	github.com/fatih/color v1.13.0
 	github.com/gin-gonic/gin v1.8.1
@@ -17,7 +17,7 @@ require (
 
 require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
-	github.com/chenzhuoyu/base64x v0.0.0-20211019084208-fb5309c8db06 // indirect
+	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
