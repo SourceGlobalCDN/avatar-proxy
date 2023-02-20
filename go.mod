@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/bytedance/sonic v1.5.0
-	github.com/chenyahui/gin-cache v1.7.1
+	github.com/chenyahui/gin-cache v1.8.1
 	github.com/fatih/color v1.13.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-redis/redis/v8 v8.11.5
